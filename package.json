@@ -1,0 +1,21 @@
+{
+	"name": "lazy_reactive_library",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "vitest",
+		"start": "jiti src/index.ts",
+		"dev": "vite ./dev"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"jiti": "^1.19.1"
+	},
+	"dependencies": {
+		"vite": "^4.4.4",
+		"vitest": "^0.34.3"
+	}
+}
