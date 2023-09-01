@@ -1,3 +1,6 @@
+/**
+ * An array of nodes in their update order
+ */
 export const COMPUTATIONS: Computation<any>[] = [];
 /**
  * Whether or not the current computation is being observed
