@@ -6,23 +6,7 @@ export const COMPUTATIONS: Computation<any>[] = [];
 let OBSERVED: boolean = false;
 let BATCHING: boolean = false;
 const BATCHEDUPDATES: { start: number; stop: number }[] = [];
-export const stabilize = (start: number, stop: number) => {
-	for (let i = start; i <= stop; i++) {
-		const comp = COMPUTATIONS[i];
-		const newVal = comp.fn();
-		// We always want to iterate until the the greatest stop value
-		// This ensures that all dirty nodes are updated
-		// We can also not bother updating the stop value if this node's value hasn't changed.
-		// This means that the nodes depending on it are clean
-		if (comp.stop && comp.stop > stop && newVal != comp.value) {
-			stop = comp.stop;
-		}
-		comp.value = newVal;
-	}
-};
-export const clearComputations = () => {
-	COMPUTATIONS.length = 0;
-};
+
 export class Computation<T> {
 	/**
 	 *  The index of this node in the COMPUTATIONS array
@@ -107,4 +91,28 @@ export const batch = <T>(fn: () => T) => {
 		stabilize(start, stop);
 	}
 	return res;
+};
+export const stabilize = (start: number, stop: number) => {
+	for (let i = start; i <= stop; i++) {
+		const comp = COMPUTATIONS[i];
+		const newVal = comp.fn();
+		// We always want to iterate until the the greatest stop value
+		// This ensures that all dirty nodes are updated
+		// We can also not bother updating the stop value if this node's value hasn't changed.
+		// This means that the nodes depending on it are clean
+		if (comp.stop && comp.stop > stop && newVal != comp.value) {
+			stop = comp.stop;
+		}
+		comp.value = newVal;
+	}
+};
+export const untrack = <T>(fn: () => T) => {
+	const prev = OBSERVED;
+	OBSERVED = false;
+	const res = fn();
+	OBSERVED = prev;
+	return res;
+};
+export const clearComputations = () => {
+	COMPUTATIONS.length = 0;
 };

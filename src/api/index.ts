@@ -1,5 +1,5 @@
 import { Computation } from "../core";
-export { batch } from "../core";
+export { batch, untrack } from "../core";
 export const createEffect = <T>(fn: () => T, name?: string) => {
 	new Computation(fn, { name });
 };
