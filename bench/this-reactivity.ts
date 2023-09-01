@@ -1,10 +1,10 @@
-import { createEffect, createSignal } from "../src";
+import { createMemo, createSignal } from "../src";
 
 export const bench = (updates: number) => {
 	const [get, set] = createSignal(0);
-	createEffect(() => {
-		get();
-	});
+	const B = createMemo(() => get());
+	const C = createMemo(() => B());
+	const D = createMemo(() => C());
 	for (let i = 0; i < updates; i++) {
 		set(i);
 	}

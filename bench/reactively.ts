@@ -1,11 +1,11 @@
 import { reactive } from "@reactively/core";
 
 export const bench = (updates: number) => {
-	const thing = reactive(0);
-	reactive(() => {
-		thing.get();
-	});
+    const data = reactive(0);
+	const B = reactive(() => data.get());
+    const C = reactive(() => B.get());
+    const D = reactive(() => C.get());
 	for (let i = 0; i < updates; i++) {
-		thing.set(i);
+		data.set(i);
 	}
 };
