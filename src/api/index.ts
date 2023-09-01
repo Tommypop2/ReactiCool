@@ -1,12 +1,12 @@
 import { Computation } from "../core";
 
-export const createEffect = <T>(fn: () => T) => {
-	new Computation(fn);
+export const createEffect = <T>(fn: () => T, name?: string) => {
+	new Computation(fn, name);
 };
-export const createMemo = <T>(fn: () => T) => {
-	return new Computation(fn).read;
+export const createMemo = <T>(fn: () => T, name?: string) => {
+	return new Computation(fn, name).read;
 };
-export const createSignal = <T>(initial: T) => {
-	const { read, write } = new Computation(initial);
+export const createSignal = <T>(initial: T, name?: string) => {
+	const { read, write } = new Computation(initial, name);
 	return [read, write] as const;
 };

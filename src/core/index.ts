@@ -1,18 +1,21 @@
 export const COMPUTATIONS: Computation<any>[] = [];
-let hasObserver = false;
+/**
+ * The current observer
+ * This is used to determine whether or not a node should be added to `COMPUTATIONS`
+ * and to set the `stop` index for this node
+ */
+let OBSERVER: Computation<any> | null = null;
 export const runUpdates = (start: number, stop: number) => {
-	let updatedComputations = false;
 	for (let i = start; i <= stop; i++) {
 		const comp = COMPUTATIONS[i];
-		// If the current computation is a signal, and we've already updated computations, the loop can stop here
-		// This doesn't really work because of edge cases where computations in the order "signal, effect, signal, effect" would cause
-		// issues updating the second effect when the first signal updates. The solution here would be to store a stop index for each node,
-		// which is where we finish looping to on updates
-		if (comp.signal && updatedComputations) break;
-
-		if (!comp.signal) updatedComputations = true;
+		if(comp.stop && comp.stop > stop) {
+			stop = comp.stop;
+		}
 		comp.value = comp.fn();
 	}
+};
+export const clearComputations = () => {
+	COMPUTATIONS.length = 0;
 };
 export class Computation<T> {
 	/**
@@ -25,30 +28,37 @@ export class Computation<T> {
 	stop: number | null = null;
 	value: T;
 	signal: boolean = false;
+	name?: string;
 	fn: () => T;
-	constructor(fnOrVal: T | (() => T)) {
+	constructor(fnOrVal: T | (() => T), name?: string) {
+		this.name = name;
 		if (typeof fnOrVal !== "function") {
 			let value = fnOrVal;
 			fnOrVal = () => value;
 			this.signal = true;
 		}
 		this.fn = fnOrVal as () => T;
-		const prev = hasObserver;
-		hasObserver = true;
+		const prev = OBSERVER;
+		OBSERVER = this;
 		this.value = this.fn();
-		hasObserver = prev;
+		OBSERVER = prev;
 		if (this.slot === null) {
 			this.slot = COMPUTATIONS.length;
+			this.stop = COMPUTATIONS.length;
 			COMPUTATIONS.push(this);
 		}
 	}
 	read = () => {
-		if (hasObserver && this.slot === null) COMPUTATIONS.push(this);
+		if (OBSERVER) this.stop = COMPUTATIONS.length;
+		if (OBSERVER && this.slot === null) {
+			this.slot = COMPUTATIONS.length;
+			COMPUTATIONS.push(this);
+		}
 		return this.value;
 	};
 	write = (val: T) => {
 		this.value = val;
 		if (this.slot === null) return;
-		runUpdates(this.slot + 1, COMPUTATIONS.length - 1);
+		runUpdates(this.slot + 1, this.stop ?? COMPUTATIONS.length - 1);
 	};
 }
