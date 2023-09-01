@@ -19,15 +19,13 @@ export class Computation<T> {
 	value: T;
 	name?: string;
 	fn: () => T;
-	equals: (a: T, b: T) => boolean = (a, b) => a === b;
+	equals: (a: T, b: T) => boolean;
 	constructor(
 		fnOrVal: T | (() => T),
 		options?: { name?: string; equals?: typeof Computation.prototype.equals }
 	) {
 		this.name = options?.name;
-		if (options?.equals) {
-			this.equals = options.equals;
-		}
+		this.equals = options?.equals ?? ((a, b) => a === b);
 		if (typeof fnOrVal !== "function") {
 			let value = fnOrVal;
 			fnOrVal = () => value;
@@ -81,7 +79,34 @@ export class Computation<T> {
 /**
  * Merges all the overlapping batched update indexes, so we don't update the same node twice
  */
-const mergeUpdates = () => {};
+const mergeUpdates = () => {
+	for (let i = 0; i < BATCHEDUPDATES.length; i++) {
+		const mainUpdate = BATCHEDUPDATES[i];
+		for (let j = i + 1; j < BATCHEDUPDATES.length; j++) {
+			const otherUpdate = BATCHEDUPDATES[j];
+			if (
+				otherUpdate.stop > mainUpdate.stop &&
+				otherUpdate.start <= mainUpdate.stop
+			) {
+				mainUpdate.stop = otherUpdate.stop;
+				BATCHEDUPDATES.splice(j, 1);
+			}
+			if (
+				otherUpdate.start < mainUpdate.start &&
+				otherUpdate.stop <= mainUpdate.stop
+			) {
+				mainUpdate.start = otherUpdate.start;
+				BATCHEDUPDATES.splice(j, 1);
+			}
+			if (
+				otherUpdate.start >= mainUpdate.start &&
+				otherUpdate.stop <= mainUpdate.stop
+			) {
+				BATCHEDUPDATES.splice(j, 1);
+			}
+		}
+	}
+};
 export const batch = <T>(fn: () => T) => {
 	BATCHING = true;
 	const res = fn();
