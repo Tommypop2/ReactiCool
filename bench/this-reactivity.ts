@@ -1,4 +1,4 @@
-import { createMemo, createSignal } from "../src";
+import { createMemo, createSignal, batch } from "../src";
 
 export const bench = (updates: number) => {
 	const [get, set] = createSignal(0);
