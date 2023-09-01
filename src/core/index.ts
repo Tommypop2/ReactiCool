@@ -33,8 +33,15 @@ export class Computation<T> {
 	value: T;
 	name?: string;
 	fn: () => T;
-	constructor(fnOrVal: T | (() => T), name?: string) {
-		this.name = name;
+	equals: (a: T, b: T) => boolean = (a, b) => a === b;
+	constructor(
+		fnOrVal: T | (() => T),
+		options?: { name?: string; equals?: typeof Computation.prototype.equals }
+	) {
+		this.name = options?.name;
+		if (options?.equals) {
+			this.equals = options.equals;
+		}
 		if (typeof fnOrVal !== "function") {
 			let value = fnOrVal;
 			fnOrVal = () => value;
@@ -58,7 +65,7 @@ export class Computation<T> {
 		return this.value;
 	};
 	write = (val: T) => {
-		if (val === this.value) return;
+		if (this.equals(val, this.value)) return;
 		this.value = val;
 		if (this.slot === null) return;
 		runUpdates(this.slot + 1, this.stop ?? COMPUTATIONS.length - 1);
