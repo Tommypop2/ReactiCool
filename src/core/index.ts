@@ -4,6 +4,8 @@ export const COMPUTATIONS: Computation<any>[] = [];
  * This is used to determine whether or not a node should be added to `COMPUTATIONS`
  */
 let OBSERVED: boolean = false;
+let BATCHING: boolean = false;
+const BATCHEDUPDATES: { start: number; stop: number }[] = [];
 export const stabilize = (start: number, stop: number) => {
 	for (let i = start; i <= stop; i++) {
 		const comp = COMPUTATIONS[i];
@@ -77,6 +79,10 @@ export class Computation<T> {
 		this.value = val;
 		// If there is no stop value, then this node has no dependencies
 		if (!this.stop) return;
+		if (BATCHING) {
+			BATCHEDUPDATES.push({ start: this.slot + 1, stop: this.stop });
+			return;
+		}
 		stabilize(this.slot + 1, this.stop);
 	};
 	/**
@@ -88,3 +94,17 @@ export class Computation<T> {
 		this.slot = null;
 	};
 }
+/**
+ * Merges all the overlapping batched update indexes, so we don't update the same node twice
+ */
+const mergeUpdates = () => {};
+export const batch = <T>(fn: () => T) => {
+	BATCHING = true;
+	const res = fn();
+	BATCHING = false;
+	mergeUpdates();
+	for (const { start, stop } of BATCHEDUPDATES) {
+		stabilize(start, stop);
+	}
+	return res;
+};
