@@ -23,7 +23,7 @@ export class Computation<T> {
 	stop: number | null = null;
 	value: T;
 	name?: string;
-	fn: () => T;
+	fn: (() => T) | null = null;
 	equals: (a: T, b: T) => boolean;
 	constructor(
 		fnOrVal: T | (() => T),
@@ -32,14 +32,14 @@ export class Computation<T> {
 		this.name = options?.name;
 		this.equals = options?.equals ?? ((a, b) => a === b);
 		if (typeof fnOrVal !== "function") {
-			let value = fnOrVal;
-			fnOrVal = () => value;
+			this.value = fnOrVal;
+		} else {
+			this.fn = fnOrVal as () => T;
+			const prev = OBSERVED;
+			OBSERVED = true;
+			this.value = this.fn();
+			OBSERVED = prev;
 		}
-		this.fn = fnOrVal as () => T;
-		const prev = OBSERVED;
-		OBSERVED = true;
-		this.value = this.fn();
-		OBSERVED = prev;
 		if (this.slot === null) {
 			this.slot = COMPUTATIONS.length;
 			COMPUTATIONS.push(this);
@@ -130,12 +130,13 @@ export const batch = <T>(fn: () => T) => {
 export const stabilize = (start: number, stop: number) => {
 	for (let i = start; i <= stop; i++) {
 		const comp = COMPUTATIONS[i];
+		if (comp.fn === null) continue;
 		const newVal = comp.fn();
 		// Don't need to increase `stop` if the value hasn't changed
 		if (newVal === comp.value) continue;
 		// We always want to iterate until the the greatest stop value
 		// This ensures that all dirty nodes are updated
-		if (comp.stop && comp.stop > stop) {
+		if (comp.stop !== null && comp.stop > stop) {
 			stop = comp.stop;
 		}
 		comp.value = newVal;
