@@ -4,7 +4,7 @@ export const COMPUTATIONS: Computation<any>[] = [];
  * This is used to determine whether or not a node should be added to `COMPUTATIONS`
  */
 let OBSERVED: boolean = false;
-export const runUpdates = (start: number, stop: number) => {
+export const stabilize = (start: number, stop: number) => {
 	for (let i = start; i <= stop; i++) {
 		const comp = COMPUTATIONS[i];
 		const newVal = comp.fn();
@@ -56,6 +56,10 @@ export class Computation<T> {
 			COMPUTATIONS.push(this);
 		}
 	}
+	/**
+	 * Reads the current value of the computation - tracking it as a dependency of the current observer
+	 * @returns The current value of the computation
+	 */
 	read = () => {
 		if (OBSERVED) this.stop = COMPUTATIONS.length;
 		if (OBSERVED && this.slot === null) {
@@ -65,9 +69,18 @@ export class Computation<T> {
 		return this.value;
 	};
 	write = (val: T) => {
-		if (this.equals(val, this.value)) return;
+		if (this.equals(val, this.value) || this.slot === null) return;
 		this.value = val;
+		// If there is no stop value, then this node has no dependencies
+		if (!this.stop) return;
+		stabilize(this.slot + 1, this.stop);
+	};
+	/**
+	 * Removes the computation from the array. This means it can get garbage collected
+	 */
+	cleanup = () => {
 		if (this.slot === null) return;
-		runUpdates(this.slot + 1, this.stop ?? COMPUTATIONS.length - 1);
+		COMPUTATIONS.splice(this.slot, 1);
+		this.slot = null;
 	};
 }
