@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "../../src";
+import { createEffect, createSignal } from "../src";
 
 export const bench = (updates: number) => {
 	const [get, set] = createSignal(0);
@@ -9,7 +9,3 @@ export const bench = (updates: number) => {
 		set(i);
 	}
 };
-const start = performance.now();
-bench(100000);
-
-console.log(performance.now() - start + "ms");
