@@ -1,12 +1,14 @@
 export const COMPUTATIONS: Computation<any>[] = [];
 /**
- * The current observer
+ * Whether or not the current computation is being observed
  * This is used to determine whether or not a node should be added to `COMPUTATIONS`
  */
 let OBSERVED: boolean = false;
 let BATCHING: boolean = false;
 const BATCHEDUPDATES: { start: number; stop: number }[] = [];
-
+/**
+ * The main computation class
+ */
 export class Computation<T> {
 	/**
 	 *  The index of this node in the COMPUTATIONS array
@@ -117,15 +119,20 @@ export const batch = <T>(fn: () => T) => {
 	}
 	return res;
 };
+/**
+ * Stabilizes nodes between the `start`, and `stop` indexes
+ * @param start The index to start stabilzing from
+ * @param stop The index to stop stabilzing at
+ */
 export const stabilize = (start: number, stop: number) => {
 	for (let i = start; i <= stop; i++) {
 		const comp = COMPUTATIONS[i];
 		const newVal = comp.fn();
+		// Don't need to increase `stop` if the value hasn't changed
+		if (newVal === comp.value) continue;
 		// We always want to iterate until the the greatest stop value
 		// This ensures that all dirty nodes are updated
-		// We can also not bother updating the stop value if this node's value hasn't changed.
-		// This means that the nodes depending on it are clean
-		if (comp.stop && comp.stop > stop && newVal != comp.value) {
+		if (comp.stop && comp.stop > stop) {
 			stop = comp.stop;
 		}
 		comp.value = newVal;
