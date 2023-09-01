@@ -58,6 +58,7 @@ export class Computation<T> {
 		return this.value;
 	};
 	write = (val: T) => {
+		if (val === this.value) return;
 		this.value = val;
 		if (this.slot === null) return;
 		runUpdates(this.slot + 1, this.stop ?? COMPUTATIONS.length - 1);
