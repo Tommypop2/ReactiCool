@@ -68,6 +68,10 @@ export class Computation<T> {
 		}
 		return this.value;
 	};
+	/**
+	 * Writes a value to the computation
+	 * @param val The value to write
+	 */
 	write = (val: T) => {
 		if (this.equals(val, this.value) || this.slot === null) return;
 		this.value = val;
