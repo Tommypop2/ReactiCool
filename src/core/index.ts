@@ -20,7 +20,7 @@ export class Computation<T> {
 	 * */
 	slot: number | null = null;
 	/**
-	 * The index of the last node that we should update when this node updates
+	 * The index of the last node that depends on this node
 	 */
 	stop: number | null = null;
 	value: T;
