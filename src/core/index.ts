@@ -2,16 +2,20 @@ export const COMPUTATIONS: Computation<any>[] = [];
 /**
  * The current observer
  * This is used to determine whether or not a node should be added to `COMPUTATIONS`
- * and to set the `stop` index for this node
  */
 let OBSERVED: boolean = false;
 export const runUpdates = (start: number, stop: number) => {
 	for (let i = start; i <= stop; i++) {
 		const comp = COMPUTATIONS[i];
-		if (comp.stop && comp.stop > stop) {
+		const newVal = comp.fn();
+		// We always want to iterate until the the greatest stop value
+		// This ensures that all dirty nodes are updated
+		// We can also not bother updating the stop value if this node's value hasn't changed.
+		// This means that the nodes depending on it are clean
+		if (comp.stop && comp.stop > stop && newVal != comp.value) {
 			stop = comp.stop;
 		}
-		comp.value = comp.fn();
+		comp.value = newVal;
 	}
 };
 export const clearComputations = () => {
