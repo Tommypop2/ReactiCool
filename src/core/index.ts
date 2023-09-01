@@ -4,11 +4,11 @@ export const COMPUTATIONS: Computation<any>[] = [];
  * This is used to determine whether or not a node should be added to `COMPUTATIONS`
  * and to set the `stop` index for this node
  */
-let OBSERVER: Computation<any> | null = null;
+let OBSERVED: boolean = false;
 export const runUpdates = (start: number, stop: number) => {
 	for (let i = start; i <= stop; i++) {
 		const comp = COMPUTATIONS[i];
-		if(comp.stop && comp.stop > stop) {
+		if (comp.stop && comp.stop > stop) {
 			stop = comp.stop;
 		}
 		comp.value = comp.fn();
@@ -27,7 +27,6 @@ export class Computation<T> {
 	 */
 	stop: number | null = null;
 	value: T;
-	signal: boolean = false;
 	name?: string;
 	fn: () => T;
 	constructor(fnOrVal: T | (() => T), name?: string) {
@@ -35,22 +34,20 @@ export class Computation<T> {
 		if (typeof fnOrVal !== "function") {
 			let value = fnOrVal;
 			fnOrVal = () => value;
-			this.signal = true;
 		}
 		this.fn = fnOrVal as () => T;
-		const prev = OBSERVER;
-		OBSERVER = this;
+		const prev = OBSERVED;
+		OBSERVED = true;
 		this.value = this.fn();
-		OBSERVER = prev;
+		OBSERVED = prev;
 		if (this.slot === null) {
 			this.slot = COMPUTATIONS.length;
-			this.stop = COMPUTATIONS.length;
 			COMPUTATIONS.push(this);
 		}
 	}
 	read = () => {
-		if (OBSERVER) this.stop = COMPUTATIONS.length;
-		if (OBSERVER && this.slot === null) {
+		if (OBSERVED) this.stop = COMPUTATIONS.length;
+		if (OBSERVED && this.slot === null) {
 			this.slot = COMPUTATIONS.length;
 			COMPUTATIONS.push(this);
 		}
