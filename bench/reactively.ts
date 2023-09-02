@@ -7,5 +7,7 @@ export const bench = (updates: number) => {
 	const D = reactive(() => C.get());
 	for (let i = 0; i < updates; i++) {
 		data.set(i);
+		// Force reactively to recompute
+		D.get();
 	}
 };

@@ -21,6 +21,11 @@ export class Computation<T> {
 	 * The index of the last node that depends on this node
 	 */
 	stop: number | null = null;
+	/**
+	 * The index of the first node that this node depends upon
+	 * This will be used to determine where this node's dependencies start, so dynamic dependencies can work
+	 */
+	depInd: number | null = null;
 	value: T;
 	name?: string;
 	fn: (() => T) | null = null;
@@ -31,6 +36,8 @@ export class Computation<T> {
 	) {
 		this.name = options?.name;
 		this.equals = options?.equals ?? ((a, b) => a === b);
+		// If a computation is pushed to the array while being observed, it will push itself to this array, and will be the first dependency
+		this.depInd = COMPUTATIONS.length;
 		if (typeof fnOrVal !== "function") {
 			this.value = fnOrVal;
 		} else {
@@ -44,6 +51,8 @@ export class Computation<T> {
 			this.slot = COMPUTATIONS.length;
 			COMPUTATIONS.push(this);
 		}
+		// If this node's slot in the array is the same as the index to its first dependency, then it has no dependencies
+		if (this.depInd === this.slot) this.depInd = null;
 	}
 	/**
 	 * Reads the current value of the computation - tracking it as a dependency of the current observer
