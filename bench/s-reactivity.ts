@@ -6,5 +6,6 @@ export const bench = (updates: number) => {
 	const D = S(() => C());
 	for (let i = 0; i < updates; i++) {
 		data(i);
+		D();
 	}
 };

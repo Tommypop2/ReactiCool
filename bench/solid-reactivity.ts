@@ -7,5 +7,6 @@ export const bench = (updates: number) => {
 	const D = createMemo(() => C());
 	for (let i = 0; i < updates; i++) {
 		set(i);
+		D();
 	}
 };

@@ -3,6 +3,7 @@ import { bench as thisBench } from "./this-reactivity";
 import { bench as reactivelyBench } from "./reactively";
 import { bench as sBench } from "./s-reactivity";
 import { bench as solidBench } from "./solid-reactivity";
+import { bench as vueBench } from "./vue-reactivity";
 const bench = (benchFn: (updates: number) => any) => {
 	const start = performance.now();
 	benchFn(100000);
@@ -15,11 +16,13 @@ const main = () => {
 	const reactivelyTime = bench(reactivelyBench);
 	const sJsTime = bench(sBench);
 	const solidTime = bench(solidBench);
+	const vueTime = bench(vueBench);
 	console.log(`This: ${thisTime}ms`);
 	console.log(`CLI: ${cliTime}ms`);
 	console.log(`Reactively: ${reactivelyTime}ms`);
 	console.log(`S.js: ${sJsTime}ms`);
 	console.log(`Solid: ${solidTime}ms`);
+	console.log(`Vue: ${vueTime}ms`);
 };
 
 main();

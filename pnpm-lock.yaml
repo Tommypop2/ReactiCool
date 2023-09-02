@@ -11,6 +11,9 @@ devDependencies:
   '@solid-cli/reactivity':
     specifier: ^0.0.11
     version: 0.0.11
+  '@vue/reactivity':
+    specifier: ^3.3.4
+    version: 3.3.4
   jiti:
     specifier: ^1.19.3
     version: 1.19.3
@@ -303,6 +306,16 @@ packages:
       diff-sequences: 29.6.3
       loupe: 2.3.6
       pretty-format: 29.6.3
+    dev: true
+
+  /@vue/reactivity@3.3.4:
+    resolution: {integrity: sha512-kLTDLwd0B1jG08NBF3R5rqULtv/f8x3rOFByTDz4J53ttIQEDmALqKqXY0J+XQeN0aV2FBxY8nJDf88yvOPAqQ==}
+    dependencies:
+      '@vue/shared': 3.3.4
+    dev: true
+
+  /@vue/shared@3.3.4:
+    resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
     dev: true
 
   /acorn-walk@8.2.0:

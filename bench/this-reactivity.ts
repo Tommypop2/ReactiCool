@@ -1,4 +1,4 @@
-import { createMemo, createSignal, batch } from "../src";
+import { createMemo, createSignal } from "../src";
 
 export const bench = (updates: number) => {
 	const [get, set] = createSignal(0);
@@ -7,5 +7,6 @@ export const bench = (updates: number) => {
 	const D = createMemo(() => C());
 	for (let i = 0; i < updates; i++) {
 		set(i);
+		D();
 	}
 };
