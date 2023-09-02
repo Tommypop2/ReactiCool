@@ -8,7 +8,10 @@ export const COMPUTATIONS: Computation<any>[] = [];
  */
 let OBSERVED: boolean = false;
 let BATCHING: boolean = false;
-const BATCHEDUPDATES: { start: number; stop: number }[] = [];
+/**
+ * Stores the nodes that need to be updated when the batch ends
+ */
+const BATCHEDUPDATES: Computation<any>[] = [];
 /**
  * The main computation class
  */
@@ -26,6 +29,10 @@ export class Computation<T> {
 	 * This will be used to determine where this node's dependencies start, so dynamic dependencies can work
 	 */
 	depInd: number | null = null;
+	/**
+	 * Whether this computation is currently being batched
+	 */
+	batched: boolean = false;
 	value: T;
 	name?: string;
 	fn: (() => T) | null = null;
@@ -76,7 +83,10 @@ export class Computation<T> {
 		// If there is no stop value, then this node has no dependencies
 		if (!this.stop) return;
 		if (BATCHING) {
-			BATCHEDUPDATES.push({ start: this.slot + 1, stop: this.stop });
+			if (!this.batched) {
+				BATCHEDUPDATES.push(this);
+				this.batched = true;
+			}
 			return;
 		}
 		stabilize(this.slot + 1, this.stop);
@@ -90,45 +100,18 @@ export class Computation<T> {
 		this.slot = null;
 	};
 }
-/**
- * Merges all the overlapping batched update indexes, so we don't update the same node twice
- */
-const mergeUpdates = () => {
-	for (let i = 0; i < BATCHEDUPDATES.length; i++) {
-		const mainUpdate = BATCHEDUPDATES[i];
-		for (let j = i + 1; j < BATCHEDUPDATES.length; j++) {
-			const otherUpdate = BATCHEDUPDATES[j];
-			if (
-				otherUpdate.stop > mainUpdate.stop &&
-				otherUpdate.start <= mainUpdate.stop
-			) {
-				mainUpdate.stop = otherUpdate.stop;
-				BATCHEDUPDATES.splice(j, 1);
-			}
-			if (
-				otherUpdate.start < mainUpdate.start &&
-				otherUpdate.stop <= mainUpdate.stop
-			) {
-				mainUpdate.start = otherUpdate.start;
-				BATCHEDUPDATES.splice(j, 1);
-			}
-			if (
-				otherUpdate.start >= mainUpdate.start &&
-				otherUpdate.stop <= mainUpdate.stop
-			) {
-				BATCHEDUPDATES.splice(j, 1);
-			}
-		}
-	}
-};
+
 export const batch = <T>(fn: () => T) => {
 	BATCHING = true;
 	const res = fn();
 	BATCHING = false;
-	mergeUpdates();
-	for (const { start, stop } of BATCHEDUPDATES) {
-		stabilize(start, stop);
+	let prevStop = -1;
+	for (const comp of BATCHEDUPDATES) {
+		if (comp.slot! <= prevStop) continue;
+		prevStop = comp.stop!;
+		stabilize(comp.slot! + 1, comp.stop!);
 	}
+	BATCHEDUPDATES.length = 0;
 	return res;
 };
 /**
