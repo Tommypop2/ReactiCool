@@ -1,4 +1,4 @@
-import { createMemo, createSignal } from "../src";
+import { batch, createMemo, createSignal } from "../src";
 
 // export const bench = (updates: number) => {
 // 	const [get, set] = createSignal(0);
@@ -15,4 +15,5 @@ export default {
 	name: "ReactiCool",
 	signal: createSignal,
 	memo: createMemo,
+	batch,
 };

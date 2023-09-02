@@ -10,4 +10,7 @@ export default {
 		const data = computed(fn);
 		return () => data.value;
 	},
+	batch: <T>(fn: () => T) => {
+		return fn();
+	},
 };

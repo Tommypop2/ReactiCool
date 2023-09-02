@@ -9,4 +9,7 @@ export default {
 	memo: <T>(fn: () => T) => {
 		return S(fn);
 	},
+	batch: <T>(fn: () => T) => {
+		throw new Error();
+	},
 };

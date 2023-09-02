@@ -65,19 +65,19 @@ export class Computation<T> {
 	 * Reads the current value of the computation - tracking it as a dependency of the current observer
 	 * @returns The current value of the computation
 	 */
-	read = () => {
+	read() {
 		if (OBSERVED) this.stop = COMPUTATIONS.length;
 		if (OBSERVED && this.slot === null) {
 			this.slot = COMPUTATIONS.length;
 			COMPUTATIONS.push(this);
 		}
 		return this.value;
-	};
+	}
 	/**
 	 * Writes a value to the computation
 	 * @param val The value to write
 	 */
-	write = (val: T) => {
+	write(val: T) {
 		if (this.equals(val, this.value) || this.slot === null) return;
 		this.value = val;
 		// If there is no stop value, then this node has no dependencies
@@ -90,7 +90,7 @@ export class Computation<T> {
 			return;
 		}
 		stabilize(this.slot + 1, this.stop);
-	};
+	}
 	/**
 	 * Removes the computation from the array. This means it can get garbage collected
 	 */
@@ -100,7 +100,9 @@ export class Computation<T> {
 		this.slot = null;
 	};
 }
-
+/**
+ * Batches changes together
+ */
 export const batch = <T>(fn: () => T) => {
 	BATCHING = true;
 	const res = fn();
@@ -134,6 +136,9 @@ export const stabilize = (start: number, stop: number) => {
 		comp.value = newVal;
 	}
 };
+/**
+ * Untracks a function. This means that any read computations will not be tracked as dependencies
+ */
 export const untrack = <T>(fn: () => T) => {
 	const prev = OBSERVED;
 	OBSERVED = false;

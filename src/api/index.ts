@@ -4,9 +4,10 @@ export const createEffect = <T>(fn: () => T, name?: string) => {
 	new Computation(fn, { name });
 };
 export const createMemo = <T>(fn: () => T, name?: string) => {
-	return new Computation(fn, { name }).read;
+	const comp = new Computation(fn, { name });
+	return comp.read.bind(comp);
 };
 export const createSignal = <T>(initial: T, name?: string) => {
-	const { read, write } = new Computation(initial, { name });
-	return [read, write] as const;
+	const comp = new Computation(initial, { name });
+	return [comp.read.bind(comp), comp.write.bind(comp)] as const;
 };

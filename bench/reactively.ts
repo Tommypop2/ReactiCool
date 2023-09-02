@@ -10,4 +10,7 @@ export default {
 		const data = reactive(fn);
 		return () => data.get();
 	},
+	batch: <T>(fn: () => T) => {
+		return fn();
+	},
 };
