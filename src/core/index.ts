@@ -81,9 +81,9 @@ export class Computation<T> {
 		if (this.equals(val, this.value) || this.slot === null) return;
 		this.value = val;
 		// If there is no stop value, then this node has no dependencies
-		if (!this.stop) return;
-		if (BATCHING) {
-			if (!this.batched) {
+		if (this.stop === null) return;
+		if (BATCHING === true) {
+			if (this.batched === false) {
 				BATCHEDUPDATES.push(this);
 				this.batched = true;
 			}
