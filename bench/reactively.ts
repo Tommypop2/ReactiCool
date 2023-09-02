@@ -1,13 +1,13 @@
 import { reactive } from "@reactively/core";
 
-export const bench = (updates: number) => {
-	const data = reactive(0);
-	const B = reactive(() => data.get());
-	const C = reactive(() => B.get());
-	const D = reactive(() => C.get());
-	for (let i = 0; i < updates; i++) {
-		data.set(i);
-		// Force reactively to recompute
-		D.get();
-	}
+export default {
+	name: "Reactively",
+	signal: <T>(initial: T) => {
+		const data = reactive(initial);
+		return [() => data.get, (val: T) => data.set(val)] as const;
+	},
+	memo: <T>(fn: () => T) => {
+		const data = reactive(fn);
+		return () => data.get();
+	},
 };

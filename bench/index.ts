@@ -1,28 +1,28 @@
-import { bench as cliBench } from "./cli-reactivity";
-import { bench as thisBench } from "./this-reactivity";
-import { bench as reactivelyBench } from "./reactively";
-import { bench as sBench } from "./s-reactivity";
-import { bench as solidBench } from "./solid-reactivity";
-import { bench as vueBench } from "./vue-reactivity";
-const bench = (benchFn: (updates: number) => any) => {
-	const start = performance.now();
-	benchFn(100000);
-	const end = performance.now();
-	return end - start;
+import cli from "./cli-reactivity";
+import reactively from "./reactively";
+import sjs from "./s-reactivity";
+import solidjs from "./solid-reactivity";
+import reacticool from "./this-reactivity";
+import vueReactivity from "./vue-reactivity";
+const BENCHMARKS = [reacticool, sjs, cli, reactively, solidjs, vueReactivity];
+const bench = (reactivity: (typeof BENCHMARKS)[number]) => {
+	const [get, set] = reactivity.signal(0);
+	const B = reactivity.memo(() => get());
+	const C = reactivity.memo(() => B());
+	const D = reactivity.memo(() => C());
+	for (let i = 0; i < 100000; i++) {
+		set(i);
+		D();
+	}
 };
-const main = () => {
-	const thisTime = bench(thisBench);
-	const cliTime = bench(cliBench);
-	const reactivelyTime = bench(reactivelyBench);
-	const sJsTime = bench(sBench);
-	const solidTime = bench(solidBench);
-	const vueTime = bench(vueBench);
-	console.log(`This: ${thisTime}ms`);
-	console.log(`CLI: ${cliTime}ms`);
-	console.log(`Reactively: ${reactivelyTime}ms`);
-	console.log(`S.js: ${sJsTime}ms`);
-	console.log(`Solid: ${solidTime}ms`);
-	console.log(`Vue: ${vueTime}ms`);
+const benchAll = () => {
+	// Prevent any libraries from using console.warn
+	globalThis.console.warn = () => {};
+	for (const benchmark of BENCHMARKS) {
+		const start = performance.now();
+		bench(benchmark);
+		const end = performance.now();
+		console.log(`${benchmark.name}: ${end - start}ms`);
+	}
 };
-
-main();
+benchAll();
