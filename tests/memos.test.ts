@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "vitest";
 import { createMemo, createSignal } from "../src";
-import { COMPUTATIONS, clearComputations } from "../src/core";
+import { clearComputations } from "../src/core";
 
 describe("memos", () => {
 	afterEach(() => {
