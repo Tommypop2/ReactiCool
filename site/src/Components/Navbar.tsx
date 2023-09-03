@@ -1,19 +1,18 @@
 import { A } from "@reacticool/router";
-export const Navbar = () => {
+type NavbarProps = {
+	routes: { name: string; href: string }[];
+};
+export const Navbar = (props: NavbarProps) => {
 	return (
 		<div class="h-10 w-full flex flex-row gap-2 m-0 p-0">
-			<A
-				href="/"
-				class="inline-flex items-center m-0 px-5 py-3 rounded-t-1 no-underline text-lg"
-			>
-				Home
-			</A>
-			<A
-				href="/about"
-				class="inline-flex items-center m-0 px-5 py-3 rounded-t-1 no-underline text-lg"
-			>
-				About
-			</A>
+			{props.routes.map((r) => (
+				<A
+					href={r.href}
+					class="inline-flex items-center m-0 px-5 py-3 rounded-t-1 no-underline text-lg"
+				>
+					{r.name}
+				</A>
+			))}
 		</div>
 	);
 };

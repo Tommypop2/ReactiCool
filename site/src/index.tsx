@@ -7,7 +7,12 @@ import "virtual:uno.css";
 const Root = () => {
 	return (
 		<div>
-			<Navbar></Navbar>
+			<Navbar
+				routes={[
+					{ name: "Home", href: "/" },
+					{ name: "About", href: "/about" },
+				]}
+			/>
 			<Routes>
 				<Route href="/" comp={Home}></Route>
 				<Route href="/about" comp={About}></Route>

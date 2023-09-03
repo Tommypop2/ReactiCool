@@ -10,7 +10,8 @@
 		"bench": "cd packages/bench && pnpm bench",
 		"build": "turbo run build",
 		"build:site": "vite build ./site",
-		"build:all": "pnpm build && pnpm build:site"
+		"build:all": "pnpm build && pnpm build:site",
+		"dev:site": "vite ./site"
 	},
 	"keywords": [],
 	"author": "",
