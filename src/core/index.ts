@@ -104,6 +104,7 @@ export class Computation<T> {
  * Batches changes together
  */
 export const batch = <T>(fn: () => T) => {
+	if (BATCHING) return fn();
 	BATCHING = true;
 	const res = fn();
 	BATCHING = false;
