@@ -1,9 +1,19 @@
 {
 	"compilerOptions": {
-		"strict": false,
-		"lib": ["ESNEXT", "DOM"],
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"module": "ESNext",
+		"skipLibCheck": true,
 		"declaration": true,
 		"emitDeclarationOnly": true,
+		"moduleResolution": "Bundler",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
 		"outDir": "types"
 	},
 	"include": ["src/*"]
