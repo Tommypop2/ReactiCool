@@ -1,0 +1,23 @@
+{
+	"name": "@reacticool/bench",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"bench": "jiti ./src/index.ts",
+		"build": "tsc && tsup"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"@reactively/core": "^0.0.8",
+		"@solid-cli/reactivity": "^0.0.11",
+		"@vue/reactivity": "^3.3.4",
+		"jiti": "^1.19.3",
+		"s-js": "^0.4.9",
+		"solid-js": "^1.7.11",
+		"tsup": "^7.2.0"
+	}
+}

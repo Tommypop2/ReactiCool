@@ -5,4 +5,3 @@ export {
 	template,
 	setAttribute,
 } from "dom-expressions/src/client";
-export * from "../api";

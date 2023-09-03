@@ -1,4 +1,4 @@
-import { batch, createMemo, createSignal } from "../src";
+import { batch, createMemo, createSignal } from "../../reactivity/src";
 
 export default {
 	name: "ReactiCool",

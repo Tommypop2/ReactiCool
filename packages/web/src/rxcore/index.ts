@@ -1,12 +1,4 @@
-import {
-	createEffect,
-	createMemo,
-	untrack,
-	// getOwner,
-	// createRoot,
-	// mergeProps,
-	// createComponent,
-} from "../api";
+import { createEffect, createMemo, untrack } from "@reacticool/reactivity";
 const currentContext = null;
 const sharedConfig = {};
 const getOwner = null;
@@ -26,10 +18,3 @@ export {
 	getOwner,
 	mergeProps,
 };
-
-// const getOwner = null;
-// const mergeProps = null;
-// const root = (fn: () => any) => fn();
-// const createComponent = (Comp: any, props: any) => {
-// 	return Comp(props);
-// };

@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"strict": false,
+		"lib": ["ESNEXT", "DOM"],
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"outDir": "types"
+	},
+	"include": ["src/*"]
+}

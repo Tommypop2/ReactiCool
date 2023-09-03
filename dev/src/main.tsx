@@ -1,4 +1,4 @@
-import { render } from "../../dist/array-based-reactive";
+import { render } from "../../packages/web";
 import "./main.css";
 import "virtual:uno.css";
 export default function Home() {
@@ -34,4 +34,4 @@ export default function Home() {
 		</div>
 	);
 }
-render(Home, document.getElementById("app"));
+render(Home, document.getElementById("app")!);

@@ -3,17 +3,10 @@ import solid from "vite-plugin-solid";
 import UnoCss from "unocss/vite";
 export default defineConfig({
 	plugins: [
-		// babel({
-		// 	babelConfig: {
-		// 		plugins: [
-		// 			["babel-plugin-jsx-dom-expressions", { moduleName: "mobx-jsx" }],
-		// 		],
-		// 	},
-		// }),
 		UnoCss(),
 		solid({
 			solid: {
-				moduleName: "../../dist/array-based-reactive.js",
+				moduleName: "../../packages/web",
 				delegateEvents: false,
 			},
 			dev: false,

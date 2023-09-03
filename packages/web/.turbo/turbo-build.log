@@ -1,0 +1,25 @@
+
+> @reacticool/web@1.0.0 build E:\Development\reactivity_stuff\reactivity_performance\packages\web
+> tsc && tsup
+
+[34mCLI[39m Building entry: src/index.ts, src/rxcore/index.ts
+[34mCLI[39m Using tsconfig: tsconfig.json
+[34mCLI[39m tsup v7.2.0
+[34mCLI[39m Using tsup config: E:\Development\reactivity_stuff\reactivity_performance\packages\web\tsup.config.ts
+[34mCLI[39m Target: esnext
+[34mCLI[39m Cleaning output folder
+[34mESM[39m Build start
+[34mCJS[39m Build start
+"createMemo" is imported from external module "@reacticool/reactivity" but never used in "dist/index.js".
+[32mESM[39m [1mdist\rxcore\index.mjs       [22m[32m248.00 B[39m
+[32mESM[39m [1mdist\index.mjs              [22m[32m9.40 KB[39m
+[32mESM[39m [1mdist\chunk-5WZJKBDE.mjs     [22m[32m459.00 B[39m
+[32mESM[39m [1mdist\rxcore\index.mjs.map   [22m[32m51.00 B[39m
+[32mESM[39m [1mdist\index.mjs.map          [22m[32m25.52 KB[39m
+[32mESM[39m [1mdist\chunk-5WZJKBDE.mjs.map [22m[32m718.00 B[39m
+[32mESM[39m ⚡️ Build success in 473ms
+[32mCJS[39m [1mdist\index.js            [22m[32m9.58 KB[39m
+[32mCJS[39m [1mdist\rxcore\index.js     [22m[32m916.00 B[39m
+[32mCJS[39m [1mdist\index.js.map        [22m[32m26.05 KB[39m
+[32mCJS[39m [1mdist\rxcore\index.js.map [22m[32m721.00 B[39m
+[32mCJS[39m ⚡️ Build success in 473ms

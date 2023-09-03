@@ -1,35 +1,28 @@
 {
 	"name": "array-based-reactive",
+	"private": true,
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
-	"type": "module",
 	"scripts": {
 		"test": "vitest",
 		"start": "jiti src/index.ts",
 		"dev": "vite ./dev",
-		"bench": "jiti ./bench/index.ts",
-		"build": "tsc && vite build"
-	},
-	"exports": {
-		".": {
-			"import": "./dist/array-based-reactive.mjs",
-			"require": "./dist/array-based-reactive.mjs",
-			"types": "./types/index.d.ts"
-		}
+		"bench": "cd packages/bench && pnpm bench",
+		"build": "turbo run build"
 	},
 	"keywords": [],
 	"author": "",
+	"workspaces": [
+		"./packages/*"
+	],
 	"license": "ISC",
 	"devDependencies": {
-		"@reactively/core": "^0.0.8",
-		"@solid-cli/reactivity": "^0.0.11",
+		"@types/node": "^20.5.9",
 		"@unocss/preset-wind": "^0.55.6",
-		"@vue/reactivity": "^3.3.4",
 		"babel-plugin-jsx-dom-expressions": "^0.36.10",
 		"jiti": "^1.19.3",
-		"s-js": "^0.4.9",
 		"solid-js": "^1.7.11",
+		"turbo": "^1.10.13",
 		"typescript": "^5.2.2",
 		"unocss": "^0.55.6",
 		"vite": "^4.4.9",
