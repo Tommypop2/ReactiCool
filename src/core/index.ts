@@ -1,7 +1,12 @@
+// Types
+export type Cleanup = () => any;
+export type Getter<T = any> = () => T;
+export type Setter<T = any> = (val: T) => void;
+export type Signal<T = any> = [Getter<T>, Setter<T>];
 /**
  * An array of nodes in their update order
  */
-export const COMPUTATIONS: Computation<any>[] = [];
+export const COMPUTATIONS: Computation[] = [];
 /**
  * Whether or not the current computation is being observed
  * This is used to determine whether or not a node should be added to `COMPUTATIONS`
@@ -11,11 +16,11 @@ let BATCHING: boolean = false;
 /**
  * Stores the nodes that need to be updated when the batch ends
  */
-const BATCHEDUPDATES: Computation<any>[] = [];
+const BATCHEDUPDATES: Computation[] = [];
 /**
  * The main computation class
  */
-export class Computation<T> {
+export class Computation<T = any> {
 	/**
 	 *  The index of this node in the COMPUTATIONS array
 	 * */
@@ -33,6 +38,7 @@ export class Computation<T> {
 	 * Whether this computation is currently being batched
 	 */
 	batched: boolean = false;
+	cleanups: Cleanup[] | null = null;
 	value: T;
 	name?: string;
 	fn: (() => T) | null = null;
@@ -66,10 +72,12 @@ export class Computation<T> {
 	 * @returns The current value of the computation
 	 */
 	read() {
-		if (OBSERVED) this.stop = COMPUTATIONS.length;
-		if (OBSERVED && this.slot === null) {
-			this.slot = COMPUTATIONS.length;
-			COMPUTATIONS.push(this);
+		if (OBSERVED) {
+			this.stop = COMPUTATIONS.length;
+			if (this.slot === null) {
+				this.slot = COMPUTATIONS.length;
+				COMPUTATIONS.push(this);
+			}
 		}
 		return this.value;
 	}
@@ -92,12 +100,15 @@ export class Computation<T> {
 		stabilize(this.slot + 1, this.stop);
 	}
 	/**
-	 * Removes the computation from the array. This means it can get garbage collected
+	 * Removes the computation from the array, and runs its cleanups. This means it can get garbage collected
 	 */
 	cleanup = () => {
 		if (this.slot === null) return;
 		COMPUTATIONS.splice(this.slot, 1);
 		this.slot = null;
+		if (this.cleanups === null) return;
+		this.cleanups.forEach((cleanup) => cleanup());
+		this.cleanups = null;
 	};
 }
 /**
