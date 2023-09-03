@@ -8,7 +8,8 @@
 		"start": "jiti src/index.ts",
 		"dev": "vite ./dev",
 		"bench": "cd packages/bench && pnpm bench",
-		"build": "turbo run build"
+		"build": "turbo run build",
+		"build:site": "vite build ./site"
 	},
 	"keywords": [],
 	"author": "",
