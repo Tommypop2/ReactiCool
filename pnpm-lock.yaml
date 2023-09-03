@@ -86,11 +86,10 @@ importers:
         version: 7.2.0(postcss@8.4.29)(typescript@5.2.2)
 
   packages/router:
-    dependencies:
+    devDependencies:
       '@reacticool/web':
         specifier: workspace:*
         version: link:../web
-    devDependencies:
       dom-expressions:
         specifier: ^0.36.17
         version: 0.36.17(csstype@3.1.2)(seroval@0.7.0)
