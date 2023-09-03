@@ -27,7 +27,9 @@
 		"unocss": "^0.55.6",
 		"vite": "^4.4.9",
 		"vite-plugin-babel": "^1.1.3",
-		"vitest": "^0.34.3"
+		"vitest": "^0.34.3",
+		"@reacticool/web": "workspace:*",
+		"@reacticool/router": "workspace:*"
 	},
 	"dependencies": {
 		"dom-expressions": "^0.36.17",

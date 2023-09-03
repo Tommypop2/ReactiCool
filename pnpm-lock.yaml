@@ -15,6 +15,12 @@ importers:
         specifier: ^2.7.0
         version: 2.7.0(solid-js@1.7.11)(vite@4.4.9)
     devDependencies:
+      '@reacticool/router':
+        specifier: workspace:*
+        version: link:packages/router
+      '@reacticool/web':
+        specifier: workspace:*
+        version: link:packages/web
       '@types/node':
         specifier: ^20.5.9
         version: 20.5.9
@@ -78,6 +84,25 @@ importers:
       tsup:
         specifier: ^7.2.0
         version: 7.2.0(postcss@8.4.29)(typescript@5.2.2)
+
+  packages/router:
+    dependencies:
+      '@reacticool/web':
+        specifier: workspace:*
+        version: link:../web
+    devDependencies:
+      dom-expressions:
+        specifier: ^0.36.17
+        version: 0.36.17(csstype@3.1.2)(seroval@0.7.0)
+      solid-js:
+        specifier: ^1.7.11
+        version: 1.7.11
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(postcss@8.4.29)(typescript@5.2.2)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
 
   packages/web:
     devDependencies:

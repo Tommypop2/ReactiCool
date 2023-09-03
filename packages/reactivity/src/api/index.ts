@@ -1,5 +1,6 @@
-import { Computation, Getter, Signal, untrack } from "../core";
+import { Computation, Getter, Setter, Signal, untrack } from "../core";
 export { batch, untrack } from "../core";
+export type { Getter, Setter, Signal };
 export const createEffect = <T>(fn: () => T, name?: string) => {
 	new Computation(fn, { name });
 };

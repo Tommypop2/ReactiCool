@@ -1,9 +1,16 @@
 import { render } from "../../packages/web";
+import { Routes, Route } from "../../packages/router";
 import "./main.css";
 import "virtual:uno.css";
+const Route1 = () => {
+	return <>1</>;
+};
 export default function Home() {
 	return (
 		<div class={`h-full w-full dark font-[source-sans]`}>
+			<Routes>
+				<Route href="/asd" comp={Route1}></Route>
+			</Routes>
 			<div class="h-full w-full dark:bg-dark dark:text-light transition-colors">
 				<main class="w-full h-full">
 					<div class="w-full flex flex-row justify-center h-full sm:items-center <sm:text-center">
