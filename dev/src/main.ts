@@ -1,15 +1,23 @@
 import { createEffect, createSignal } from "../../src";
-
-export const bench = (updates: number) => {
-	const [get, set] = createSignal(0);
-	createEffect(() => {
-		get();
-	});
-	for (let i = 0; i < updates; i++) {
-		set(i);
-	}
+const render = (nodes: HTMLElement[], root: HTMLElement) => {
+	root.append(...nodes);
 };
-const start = performance.now();
-bench(100000);
+const Counter = () => {
+	const [count, setCount] = createSignal(0);
+	const add = (x: number) => setCount(count() + x);
+	const countStr = () => `Count: ${count()}`;
+	const countNode = document.createElement("div");
+	createEffect(() => {
+		console.log("Effecting");
+		countNode.textContent = countStr();
+	});
+	const incrementButton = document.createElement("button");
+	incrementButton.textContent = "+";
+	incrementButton.onclick = () => add(1);
+	const decrementButton = document.createElement("button");
+	decrementButton.textContent = "-";
+	decrementButton.onclick = () => add(-1);
+	return [incrementButton, countNode, decrementButton];
+};
 
-console.log(performance.now() - start + "ms");
+render(Counter(), document.body);
