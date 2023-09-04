@@ -1,4 +1,9 @@
-import { createEffect, createMemo, untrack } from "@reacticool/reactivity";
+import {
+	createEffect,
+	createMemo,
+	untrack,
+	createSignal,
+} from "@solid-cli/reactivity";
 const currentContext = null;
 const sharedConfig = {};
 const getOwner = null;
@@ -8,6 +13,7 @@ const createComponent = (Comp: any, props: any) => {
 };
 const createRoot = (fn: () => any) => fn();
 export {
+	createSignal as signal, // Not needed for DOM expressions
 	createRoot as root,
 	createEffect as effect,
 	createMemo as memo,

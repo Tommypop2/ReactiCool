@@ -4,6 +4,7 @@ export default defineConfig({
 	entry: ["src/index.tsx"],
 	target: "esnext",
 	format: ["esm"],
+	bundle: false,
 	sourcemap: true,
 	clean: true,
 	esbuildOptions: (options) => {

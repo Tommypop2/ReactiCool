@@ -1,4 +1,4 @@
-export const About = () => {
+const About = () => {
 	return (
 		<>
 			An extremely cool reactive framework (not sure what exactly makes it cool,
@@ -6,3 +6,4 @@ export const About = () => {
 		</>
 	);
 };
+export default About;

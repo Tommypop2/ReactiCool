@@ -26,10 +26,8 @@ export const Routes = (props: ParentProps) => {
 	const index = createMemo(() =>
 		routes.findIndex((r) => r.href === location())
 	);
-	// Bug in library that forces us to do this
-	const node: HTMLDivElement = (<div></div>) as HTMLDivElement;
-	createEffect(() => node.replaceChildren(routes[index()].comp() as any));
-	return node;
+	const matched = createMemo(() => routes[index()].comp());
+	return <div>{matched()}</div>;
 };
 type RouteProps = {
 	href: string;

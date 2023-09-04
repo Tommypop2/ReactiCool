@@ -114,6 +114,9 @@ importers:
       '@reacticool/reactivity':
         specifier: workspace:*
         version: link:../reactivity
+      '@solid-cli/reactivity':
+        specifier: ^0.0.11
+        version: 0.0.11
       '@types/babel__core':
         specifier: ^7.20.1
         version: 7.20.1
