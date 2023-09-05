@@ -28,4 +28,20 @@ describe("effects", () => {
 		setB(3);
 		expect(updates).toBe(3);
 	});
+	test("A node that doesn't depend on anything shouldn't rerun when everything around it depends on the same node", () => {
+		const [A, setA] = createSignal(0);
+		createEffect(() => {
+			A();
+		});
+		let updates = 0;
+		createEffect(() => {
+			updates++;
+		});
+		createEffect(() => {
+			A();
+		});
+		expect(updates).toBe(1);
+		setA(1);
+		expect(updates).toBe(1);
+	});
 });
