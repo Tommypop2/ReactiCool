@@ -4,6 +4,7 @@ import { createEffect, createSignal, lazy, on, render } from "@reacticool/web";
 import { Home } from "./Routes/Home";
 // import About from "./Routes/About";
 const About = lazy(() => import("./Routes/About"));
+const Tests = lazy(() => import("./Routes/Tests"));
 import "virtual:uno.css";
 type Theme = "dark" | "light";
 export const [theme, setTheme] = createSignal<Theme>(
@@ -23,12 +24,14 @@ const Root = () => {
 						routes={[
 							{ name: "Home", href: "/" },
 							{ name: "About", href: "/about" },
+							{ name: "Tests", href: "/tests" },
 						]}
 					/>
 				</div>
 				<Routes>
 					<Route href="/" comp={Home}></Route>
 					<Route href="/about" comp={About}></Route>
+					<Route href="/tests" comp={Tests}></Route>
 				</Routes>
 			</div>
 		</div>
