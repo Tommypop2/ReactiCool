@@ -16,4 +16,14 @@ describe("memos", () => {
 		expect(derived()).toBe(4);
 		expect(updates).toBe(2);
 	});
+	test("Memos with multiple dependencies update when any of their dependencies change", () => {
+		const [A, setA] = createSignal(1);
+		const [B, setB] = createSignal(2);
+		const C = createMemo(() => A() * B());
+		expect(C()).toBe(2);
+		setA(2);
+		expect(C()).toBe(4);
+		setB(3);
+		expect(C()).toBe(6);
+	});
 });

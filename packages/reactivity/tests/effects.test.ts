@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { createEffect, createSignal } from "../src";
+import { createEffect, createMemo, createSignal } from "../src";
 
 describe("effects", () => {
 	test("An effect runs when a signal it depends on updates", () => {
@@ -43,5 +43,18 @@ describe("effects", () => {
 		expect(updates).toBe(1);
 		setA(1);
 		expect(updates).toBe(1);
+	});
+	test("Effects run immediately when dependencies update", () => {
+		const [A, setA] = createSignal(1);
+		const B = createMemo(() => A() * 2);
+		const C = createMemo(() => A() * 3);
+		const D = createMemo(() => B() + C());
+		let dVal;
+		createEffect(() => {
+			dVal = D();
+		});
+		expect(dVal).toBe(5);
+		setA(10);
+		expect(dVal).toBe(50);
 	});
 });

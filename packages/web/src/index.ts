@@ -13,7 +13,7 @@ export {
 	classList,
 	className,
 } from "dom-expressions/src/client";
-export * from "@solid-cli/reactivity";
+export * from "@reacticool/reactivity";
 export type ParentProps = { children: JSX.Element[] | JSX.Element };
 export const lazy = <T>(comp: () => Promise<{ default: () => T }>) => {
 	const [getComp, setComp] = signal<JSX.Element | null>(null);
