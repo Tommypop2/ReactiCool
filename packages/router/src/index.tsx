@@ -26,7 +26,11 @@ export const Routes = (props: ParentProps) => {
 	const index = createMemo(() =>
 		routes.findIndex((r) => r.href === location())
 	);
-	const matched = createMemo(() => routes[index()].comp());
+	const matched = createMemo(() => {
+		const i = index();
+		if (i < 0) return;
+		return routes[i].comp();
+	});
 	return <div>{matched()}</div>;
 };
 type RouteProps = {

@@ -13,12 +13,12 @@
 [32mESM[39m [1mdist\rxcore\index.mjs       [22m[32m246.00 B[39m
 [32mESM[39m [1mdist\chunk-JS64YYWO.mjs     [22m[32m2.90 KB[39m
 [32mESM[39m [1mdist\index.mjs              [22m[32m10.76 KB[39m
-[32mESM[39m [1mdist\chunk-JS64YYWO.mjs.map [22m[32m6.05 KB[39m
 [32mESM[39m [1mdist\rxcore\index.mjs.map   [22m[32m51.00 B[39m
+[32mESM[39m [1mdist\chunk-JS64YYWO.mjs.map [22m[32m6.05 KB[39m
 [32mESM[39m [1mdist\index.mjs.map          [22m[32m27.01 KB[39m
-[32mESM[39m ⚡️ Build success in 450ms
-[32mCJS[39m [1mdist\rxcore\index.js     [22m[32m2.43 KB[39m
+[32mESM[39m ⚡️ Build success in 465ms
 [32mCJS[39m [1mdist\index.js            [22m[32m13.58 KB[39m
-[32mCJS[39m [1mdist\index.js.map        [22m[32m32.99 KB[39m
+[32mCJS[39m [1mdist\rxcore\index.js     [22m[32m2.43 KB[39m
 [32mCJS[39m [1mdist\rxcore\index.js.map [22m[32m5.27 KB[39m
-[32mCJS[39m ⚡️ Build success in 450ms
+[32mCJS[39m [1mdist\index.js.map        [22m[32m32.99 KB[39m
+[32mCJS[39m ⚡️ Build success in 466ms

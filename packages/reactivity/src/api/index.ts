@@ -1,32 +1,32 @@
-import { Computation, Getter, Setter, Signal, untrack } from "../core";
-export { batch, untrack } from "../core";
-export type { Getter, Setter, Signal };
-export const createEffect = <T>(fn: () => T, name?: string) => {
-	new Computation(fn, { name });
+import { Computation, untrack, batch } from "../core";
+export type Getter<T = any> = () => T;
+export type Setter<T = any> = (v: T) => void;
+export type Signal<T = any> = [Getter<T>, Setter<T>];
+export const createSignal = <T>(val: T, _id?: string): Signal<T> => {
+	const comp = new Computation(() => val);
+	return [comp.read, comp.write];
 };
-export const createMemo = <T>(fn: () => T, name?: string): Getter<T> => {
-	const comp = new Computation(fn, { name });
-	return comp.read.bind(comp);
+export const createMemo = <T>(fn: () => T): Getter<T> => {
+	const comp = new Computation(fn);
+	return comp.read;
 };
-export const createSignal = <T>(initial: T, name?: string): Signal<T> => {
-	const comp = new Computation(initial, { name });
-	return [comp.read.bind(comp), comp.write.bind(comp)];
-};
-type OnOptions = {
-	defer: boolean;
+export const createEffect = (fn: () => any) => {
+	new Computation(fn, true);
 };
 export const on = <T>(
-	deps: Getter[] | Getter,
+	deps: Getter | Getter[],
 	fn: () => T,
-	opts?: OnOptions
+	opts: { defer: boolean } = { defer: false }
 ) => {
-	let defer = opts?.defer ?? false;
+	let defer = opts.defer;
 	return () => {
-		Array.isArray(deps) ? deps.forEach((dep) => dep()) : deps();
+		Array.isArray(deps) ? deps.forEach((d) => d()) : deps();
 		if (defer) {
 			defer = false;
 			return;
 		}
-		return untrack(fn);
+		untrack(fn);
 	};
 };
+
+export { untrack, batch };
