@@ -1,4 +1,10 @@
-import { Computation, untrack, batch } from "../core";
+import {
+	Computation,
+	untrack,
+	batch,
+	getCurrentObserver,
+	isBatching,
+} from "../core";
 export type Getter<T = any> = () => T;
 export type Setter<T = any> = (v: T) => void;
 export type Signal<T = any> = [Getter<T>, Setter<T>];
@@ -28,5 +34,10 @@ export const on = <T>(
 		untrack(fn);
 	};
 };
-
-export { untrack, batch };
+export const onCleanup = (fn: () => any) => {
+	const observer = getCurrentObserver();
+	if (observer) {
+		observer.cleanups.push(fn);
+	}
+};
+export { untrack, batch, getCurrentObserver, isBatching };

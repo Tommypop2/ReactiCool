@@ -14,6 +14,7 @@ export class Computation<T = any> {
 	value: T;
 	sources: Set<Computation> = new Set();
 	observers: Set<Computation> = new Set();
+	cleanups: (() => void)[] = [];
 	state: State = DIRTY;
 	fn: () => T;
 	effect: boolean;
@@ -40,7 +41,12 @@ export class Computation<T = any> {
 		this.sources.forEach((s) => s.observers.delete(this));
 		this.sources.clear();
 	}
+	executeCleanups() {
+		this.cleanups.forEach((c) => c());
+		this.cleanups.length = 0;
+	}
 	update() {
+		this.executeCleanups();
 		this.removeSources();
 		const prev = OBSERVER;
 		OBSERVER = this;
@@ -93,3 +99,5 @@ export const batch = <T>(fn: () => T) => {
 	stabilize();
 	return r;
 };
+export const getCurrentObserver = () => OBSERVER;
+export const isBatching = () => BATCHING;
