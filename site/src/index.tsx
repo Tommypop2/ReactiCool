@@ -16,8 +16,8 @@ createEffect(
 );
 const Root = () => {
 	return (
-		<div class={`h-full ${theme()}`}>
-			<div class="h-full dark:bg-dark dark:text-white transition-colors">
+		<div class={`h-full ${theme()} overflow-clip`}>
+			<div class="h-full dark:bg-dark dark:text-white transition-colors p-2">
 				<div class="h-10">
 					<Navbar
 						routes={[
