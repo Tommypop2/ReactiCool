@@ -16,7 +16,7 @@ export default function Home() {
 					<div class="w-full flex flex-row justify-center h-full sm:items-center <sm:text-center">
 						<div class="sm:hover:animate-head-shake">
 							<h1
-								class={`clip-text text-9xl <sm:text-8xl select-none animate-gradient bg-gradient relative z-2`}
+								class={`clip-text text-9xl <sm:text-8xl select-none animate-gradient bg-gradient relative z-2 w-full h-full`}
 							>
 								Very Cool
 							</h1>

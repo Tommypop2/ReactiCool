@@ -9,7 +9,7 @@ const sharedConfig = {};
 const getOwner = null;
 const mergeProps = null;
 const createComponent = (Comp: any, props: any) => {
-	return Comp(props);
+	return untrack(() => Comp(props));
 };
 const createRoot = (fn: () => any) => fn();
 
