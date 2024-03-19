@@ -19,10 +19,10 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"dom-expressions": "^0.36.17",
-		"solid-js": "^1.7.11",
-		"tsup": "^7.2.0",
-		"typescript": "^5.2.2",
+		"dom-expressions": "^0.37.19",
+		"solid-js": "^1.8.16",
+		"tsup": "^8.0.2",
+		"typescript": "^5.4.2",
 		"@reacticool/web": "workspace:*"
 	},
 	"peerDependencies": {}

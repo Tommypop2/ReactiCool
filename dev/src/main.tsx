@@ -3,7 +3,7 @@ import { Routes, Route } from "../../packages/router";
 import "./main.css";
 import "virtual:uno.css";
 const Route1 = () => {
-	return <>1</>;
+	return <div>1</div>;
 };
 export default function Home() {
 	return (

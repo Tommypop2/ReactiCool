@@ -13,14 +13,14 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"dom-expressions": "^0.36.17",
-		"solid-js": "^1.7.11",
-		"vite": "^4.4.9",
-		"vite-plugin-solid": "^2.7.0"
+		"dom-expressions": "^0.37.19",
+		"solid-js": "^1.8.16",
+		"vite": "^5.1.6",
+		"vite-plugin-solid": "^2.10.2"
 	},
 	"dependencies": {
-		"unocss": "^0.55.6",
+		"unocss": "^0.58.6",
 		"@reacticool/web": "workspace:*",
-    "@reacticool/router": "workspace:*"
+		"@reacticool/router": "workspace:*"
 	}
 }
