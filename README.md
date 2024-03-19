@@ -1,3 +1,3 @@
 # ReactiCool
 
-A reactive library that takes a fundamentally different approach to updates.
+A framework built on a custom lazy reactive library and dom-expressions
