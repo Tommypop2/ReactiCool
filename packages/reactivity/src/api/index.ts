@@ -9,7 +9,7 @@ export type Getter<T = any> = () => T;
 export type Setter<T = any> = (v: T) => void;
 export type Signal<T = any> = [Getter<T>, Setter<T>];
 export const createSignal = <T>(val: T, _id?: string): Signal<T> => {
-	const comp = new Computation(() => val);
+	const comp = new Computation(val);
 	return [comp.read, comp.write];
 };
 export const createMemo = <T>(fn: () => T): Getter<T> => {

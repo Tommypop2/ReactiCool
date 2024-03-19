@@ -16,12 +16,18 @@ export class Computation<T = any> {
 	observers: Set<Computation> = new Set();
 	cleanups: (() => void)[] = [];
 	state: State = DIRTY;
-	fn: () => T;
+	fn?: () => T;
 	effect: boolean;
-	constructor(fn: () => T, effect = false) {
-		this.fn = fn;
-		this.effect = effect;
-		this.update();
+	constructor(fnOrVal: (() => T) | T, effect = false) {
+		if (typeof fnOrVal === "function") {
+			this.fn = fnOrVal as any;
+			this.effect = effect;
+			this.update();
+		} else {
+			this.state = CLEAN;
+			this.value = fnOrVal;
+			this.effect = false;
+		}
 	}
 	updateIfNecessary() {
 		if (this.state === DIRTY) {
@@ -50,7 +56,7 @@ export class Computation<T = any> {
 		this.removeSources();
 		const prev = OBSERVER;
 		OBSERVER = this;
-		this.value = this.fn();
+		this.value = this.fn!();
 		OBSERVER = prev;
 		this.state = CLEAN;
 	}
