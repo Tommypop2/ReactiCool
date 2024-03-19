@@ -18,6 +18,12 @@ createEffect(
 		{ defer: true }
 	)
 );
+const unwrap = (fn: () => any) => {
+	let res;
+	res = fn();
+	if (typeof res === "function") return unwrap(res);
+	return res;
+};
 export const Routes = (props: ParentProps) => {
 	const children = props.children;
 	let routes = (Array.isArray(children)
@@ -31,7 +37,16 @@ export const Routes = (props: ParentProps) => {
 		if (i < 0) return;
 		return routes[i].comp();
 	});
-	return <div>{matched()}</div>;
+	const container = (<div></div>) as HTMLDivElement;
+	createEffect(() => {
+		container.innerHTML = "";
+		const unwrapped = unwrap(matched);
+		console.log(unwrapped);
+		Array.isArray(unwrapped)
+			? container.append(...unwrapped)
+			: container.append(unwrapped);
+	});
+	return container;
 };
 type RouteProps = {
 	href: string;
