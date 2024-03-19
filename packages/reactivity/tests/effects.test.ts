@@ -57,4 +57,23 @@ describe("effects", () => {
 		setA(10);
 		expect(dVal).toBe(50);
 	});
+	test("Nested effects don't interfere with each other", () => {
+		let outerRuns = 0;
+		let innerRuns = 0;
+		const [A, setA] = createSignal(0);
+		// Outer
+		createEffect(() => {
+			outerRuns++;
+			// Inner
+			createEffect(() => {
+				A();
+				innerRuns++;
+			});
+		});
+		expect(outerRuns).toBe(1);
+		expect(innerRuns).toBe(1);
+		setA(1);
+		expect(outerRuns).toBe(1);
+		expect(innerRuns).toBe(2);
+	});
 });
