@@ -49,7 +49,7 @@ describe("effects", () => {
 		const B = createMemo(() => A() * 2);
 		const C = createMemo(() => A() * 3);
 		const D = createMemo(() => B() + C());
-		let dVal;
+		let dVal: number | undefined;
 		createEffect(() => {
 			dVal = D();
 		});

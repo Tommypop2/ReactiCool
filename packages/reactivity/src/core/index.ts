@@ -83,16 +83,19 @@ export class Computation<T = any> {
 		return this.value;
 	};
 	write = (v: T) => {
-		if (v == this.value) return;
+		if (v === this.value) return;
 		this.value = v;
 		// Mark child nodes
 		this.observers.forEach((o) => o.mark(DIRTY));
 		if (!BATCHING) stabilize();
 	};
 }
-export const untrack = <T>(fn: () => T) => {
+export const runWithObserver = <T>(
+	observer: Computation | null,
+	fn: () => T,
+) => {
 	const prev = OBSERVER;
-	OBSERVER = null;
+	OBSERVER = observer;
 	const r = fn();
 	OBSERVER = prev;
 	return r;

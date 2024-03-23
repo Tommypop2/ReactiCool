@@ -1,5 +1,5 @@
 import { signal, effect, memo, untrack } from "./rxcore";
-import { JSX } from "dom-expressions/src/jsx";
+import type { JSX } from "dom-expressions/src/jsx";
 export type { JSX };
 export {
 	insert,

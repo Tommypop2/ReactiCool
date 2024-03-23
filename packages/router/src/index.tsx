@@ -1,13 +1,13 @@
 import {
-	ParentProps,
+	type ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
 	on,
 } from "@reacticool/web";
-import { JSX } from "dom-expressions/src/jsx";
+import type { JSX } from "dom-expressions/src/jsx";
 export const [location, setLocation] = createSignal(
-	window.location.href.replace(window.location.origin, "")
+	window.location.href.replace(window.location.origin, ""),
 );
 createEffect(
 	on(
@@ -15,29 +15,28 @@ createEffect(
 		() => {
 			window.history.pushState(undefined, "", location());
 		},
-		{ defer: true }
-	)
+		{ defer: true },
+	),
 );
 const unwrap = (fn: () => any) => {
-	let res;
-	res = fn();
+	const res = fn();
 	if (typeof res === "function") return unwrap(res);
 	return res;
 };
 export const Routes = (props: ParentProps) => {
 	const children = props.children;
-	let routes = (Array.isArray(children)
+	const routes = (Array.isArray(children)
 		? children
 		: [children]) as any as RouteProps[];
 	const index = createMemo(() =>
-		routes.findIndex((r) => r.href === location())
+		routes.findIndex((r) => r.href === location()),
 	);
 	const matched = createMemo(() => {
 		const i = index();
 		if (i < 0) return;
 		return routes[i].comp();
 	});
-	const container = (<div></div>) as HTMLDivElement;
+	const container = (<div />) as HTMLDivElement;
 	createEffect(() => {
 		container.innerHTML = "";
 		const unwrapped = unwrap(matched);
@@ -61,6 +60,7 @@ type AnchorProps = {
 };
 export const A = (props: AnchorProps & ParentProps) => {
 	return (
+		// biome-ignore lint/a11y/useValidAnchor: Router needs to use anchor tags
 		<a onClick={() => setLocation(props.href)} class={props.class}>
 			{props.children}
 		</a>

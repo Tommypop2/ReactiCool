@@ -1,9 +1,9 @@
 import {
 	Computation,
-	untrack,
 	batch,
 	getCurrentObserver,
 	isBatching,
+	runWithObserver,
 } from "../core";
 export type Getter<T = any> = () => T;
 export type Setter<T = any> = (v: T) => void;
@@ -19,6 +19,8 @@ export const createMemo = <T>(fn: () => T): Getter<T> => {
 export const createEffect = (fn: () => any) => {
 	new Computation(fn, true);
 };
+export const untrack = <T>(fn: () => T) => runWithObserver(null, fn);
+
 export const on = <T>(
 	deps: Getter | Getter[],
 	fn: () => T,
@@ -40,4 +42,4 @@ export const onCleanup = (fn: () => any) => {
 		observer.cleanups.push(fn);
 	}
 };
-export { untrack, batch, getCurrentObserver, isBatching };
+export { batch, getCurrentObserver, isBatching, runWithObserver };
