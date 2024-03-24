@@ -12,8 +12,10 @@ const stabilize = () => {
 export class Computation<T = any> {
 	// @ts-ignore
 	value: T;
-	sources: Set<Computation> = new Set();
-	observers: Set<Computation> = new Set();
+	sources: Computation[] = [];
+	sourceSlots: number[] = [];
+	observers: Computation[] = [];
+	observerSlots: number[] = [];
 	cleanups: (() => void)[] = [];
 	state: State = DIRTY;
 	fn?: () => T;
@@ -45,8 +47,20 @@ export class Computation<T = any> {
 		}
 	}
 	removeSources() {
-		this.sources.forEach((s) => s.observers.delete(this));
-		this.sources.clear();
+		// this.sources.forEach((s) => s.observers.delete(this));
+		// Below code works properly but is super slow
+		// this.sources.forEach((s) => {
+		// 	const ind = s.observers.indexOf(this);
+		// 	if (ind < 0) return;
+		// 	s.observers.splice(ind, 1);
+		// });
+		for (let i = 0; i < this.sources.length; i++) {
+			const s = this.sources[i];
+			const ind = this.sourceSlots[i];
+			s.observers.splice(ind, 1);
+			this.sourceSlots.splice(i, 1);
+		}
+		this.sources.length = 0;
 	}
 	executeCleanups() {
 		this.cleanups.forEach((c) => c());
@@ -76,9 +90,12 @@ export class Computation<T = any> {
 		this.observers.forEach((o) => o.mark(CHECK));
 	}
 	read = () => {
-		if (OBSERVER) {
-			OBSERVER.sources.add(this);
-			this.observers.add(OBSERVER);
+		if (OBSERVER !== null && OBSERVER.sources.indexOf(this) === -1) {
+			this.observerSlots.push(OBSERVER.sources.length);
+			OBSERVER.sources.push(this);
+
+			OBSERVER.sourceSlots.push(this.observers.length);
+			this.observers.push(OBSERVER);
 		}
 		this.updateIfNecessary();
 		return this.value;
