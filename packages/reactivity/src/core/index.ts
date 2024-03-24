@@ -59,6 +59,7 @@ export class Computation<T = any> {
 			// Remove this node from being an observer
 			const ind = this.sourceSlots[i];
 			s.observers.splice(ind, 1);
+			s.observerSlots.splice(i, 1);
 			// this.sourceSlots.splice(i, 1);
 		}
 		this.sources.length = 0;
