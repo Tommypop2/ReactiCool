@@ -76,4 +76,21 @@ describe("effects", () => {
 		expect(outerRuns).toBe(1);
 		expect(innerRuns).toBe(2);
 	});
+	test("An effect doesn't re-run if a signal which it should no longer depend on changes", () => {
+		const [bool, setBool] = createSignal(true);
+		const [get, set] = createSignal(0);
+		let updates = 0;
+		createEffect(() => {
+			if (bool()) {
+				get();
+			}
+			updates++;
+		});
+		set(1);
+		expect(updates).toBe(2);
+		setBool(false);
+		expect(updates).toBe(3);
+		set(2)
+		expect(updates).toBe(3);
+	});
 });
