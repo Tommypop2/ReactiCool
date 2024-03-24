@@ -8,7 +8,7 @@ describe("on", () => {
 		createEffect(
 			on(get, () => {
 				updates++;
-			})
+			}),
 		);
 		expect(updates).toBe(1);
 		set(1);
@@ -21,7 +21,7 @@ describe("on", () => {
 			on([], () => {
 				get();
 				updates++;
-			})
+			}),
 		);
 		expect(updates).toBe(1);
 		set(1);
@@ -36,11 +36,13 @@ describe("on", () => {
 				() => {
 					updates++;
 				},
-				{ defer: true }
-			)
+				{ defer: true },
+			),
 		);
 		expect(updates).toBe(0);
 		set(1);
 		expect(updates).toBe(1);
+		set(2);
+		expect(updates).toBe(2);
 	});
 });

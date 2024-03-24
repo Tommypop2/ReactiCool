@@ -53,13 +53,16 @@ export class Computation<T = any> {
 		// 	if (ind < 0) return;
 		// 	s.observers.splice(ind, 1);
 		// });
+		console.log(this.sources);
 		for (let i = 0; i < this.sources.length; i++) {
 			const s = this.sources[i];
+			// Remove this node from being an observer
 			const ind = this.sourceSlots[i];
 			s.observers.splice(ind, 1);
-			this.sourceSlots.splice(i, 1);
+			// this.sourceSlots.splice(i, 1);
 		}
 		this.sources.length = 0;
+		this.sourceSlots.length = 0;
 	}
 	executeCleanups() {
 		this.cleanups.forEach((c) => c());
@@ -89,7 +92,11 @@ export class Computation<T = any> {
 		this.observers.forEach((o) => o.mark(CHECK));
 	}
 	read = () => {
-		if (OBSERVER !== null && OBSERVER.sources.indexOf(this) === -1) {
+		if (
+			OBSERVER !== null &&
+			OBSERVER.sources.indexOf(this) === -1 &&
+			this.observers.indexOf(this) === -1
+		) {
 			this.observerSlots.push(OBSERVER.sources.length);
 			OBSERVER.sources.push(this);
 
