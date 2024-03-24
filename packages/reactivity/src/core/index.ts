@@ -4,10 +4,10 @@ const DIRTY = 2;
 type State = typeof CLEAN | typeof CHECK | typeof DIRTY;
 let OBSERVER: Computation | null = null;
 let BATCHING = false;
-const EFFECTSQUEUE: Set<Computation> = new Set();
+const EFFECTSQUEUE: Computation[] = [];
 const stabilize = () => {
 	EFFECTSQUEUE.forEach((e) => e.update());
-	EFFECTSQUEUE.clear();
+	EFFECTSQUEUE.length = 0;
 };
 export class Computation<T = any> {
 	// @ts-ignore
@@ -18,6 +18,7 @@ export class Computation<T = any> {
 	state: State = DIRTY;
 	fn?: () => T;
 	effect: boolean;
+	queued: boolean | undefined = false;
 	constructor(fnOrVal: (() => T) | T, effect = false) {
 		if (typeof fnOrVal === "function") {
 			this.fn = fnOrVal as any;
@@ -67,8 +68,8 @@ export class Computation<T = any> {
 		// Mark this node
 		// If we're trying to mark an effect node, add it to the queue
 		this.state = state;
-		if (this.effect === true) {
-			EFFECTSQUEUE.add(this);
+		if (this.effect === true && this.queued === false) {
+			EFFECTSQUEUE.push(this);
 			return;
 		}
 		// Get child nodes to mark
