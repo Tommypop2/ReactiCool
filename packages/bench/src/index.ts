@@ -26,6 +26,7 @@ const benchBatched = (reactivity: Reactivity) => {
 			set(i);
 		}
 	});
+	D();
 };
 const benchAll = () => {
 	// Prevent any libraries from using console.warn
