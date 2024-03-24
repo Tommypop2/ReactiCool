@@ -8,12 +8,12 @@ const Tests = lazy(() => import("./Routes/Tests"));
 import "virtual:uno.css";
 type Theme = "dark" | "light";
 export const [theme, setTheme] = createSignal<Theme>(
-	(localStorage.getItem("theme") as Theme) ?? "dark"
+	(localStorage.getItem("theme") as Theme) ?? "dark",
 );
 createEffect(
 	on(theme, () => {
 		localStorage.setItem("theme", theme());
-	})
+	}),
 );
 const Root = () => {
 	return (
@@ -29,9 +29,9 @@ const Root = () => {
 					/>
 				</div>
 				<Routes>
-					<Route href="/" comp={Home}></Route>
-					<Route href="/about" comp={About}></Route>
-					<Route href="/tests" comp={Tests}></Route>
+					<Route href="/" comp={Home} />
+					<Route href="/about" comp={About} />
+					<Route href="/tests" comp={Tests} />
 				</Routes>
 			</div>
 		</div>

@@ -5,6 +5,7 @@
 	"description": "",
 	"scripts": {
 		"test": "vitest",
+		"format": "biome format ./packages",
 		"start": "jiti src/index.ts",
 		"dev": "vite ./dev",
 		"bench": "cd packages/bench && pnpm bench",
@@ -20,6 +21,9 @@
 	],
 	"license": "MIT",
 	"devDependencies": {
+		"@biomejs/biome": "^1.6.2",
+		"@reacticool/router": "workspace:*",
+		"@reacticool/web": "workspace:*",
 		"@types/node": "^20.11.30",
 		"@unocss/preset-wind": "^0.58.6",
 		"babel-plugin-jsx-dom-expressions": "^0.37.19",
@@ -30,9 +34,7 @@
 		"unocss": "^0.58.6",
 		"vite": "^5.1.6",
 		"vite-plugin-babel": "^1.2.0",
-		"vitest": "^1.4.0",
-		"@reacticool/web": "workspace:*",
-		"@reacticool/router": "workspace:*"
+		"vitest": "^1.4.0"
 	},
 	"dependencies": {
 		"dom-expressions": "^0.37.19",

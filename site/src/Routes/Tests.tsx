@@ -1,6 +1,6 @@
 import {
-	Getter,
-	JSX,
+	type Getter,
+	type JSX,
 	ParentProps,
 	createMemo,
 	createSignal,
@@ -10,13 +10,13 @@ type ForProps<T extends readonly any[], U extends JSX.Element> = {
 	children: (item: T[number], index: Getter<number>) => U;
 };
 const For = <T extends readonly any[], U extends JSX.Element>(
-	props: ForProps<T, U>
+	props: ForProps<T, U>,
 ) => {
 	const children = props.children;
 	const each = props.each;
 	if (!each) return <></>;
 	return createMemo(
-		() => each.map((e) => children(e, () => 1)) as any
+		() => each.map((e) => children(e, () => 1)) as any,
 	) as unknown as JSX.Element;
 };
 const bubbleSort = (arr: number[]) => {
@@ -40,17 +40,17 @@ const bubbleSort = (arr: number[]) => {
 	return steps;
 };
 export const Tests = () => {
-    // Weird bug with DOM nodes below
+	// Weird bug with DOM nodes below
 	const arr = [125, 2351, 6342, 215672, 124981, 236];
 	const [displayedElems, setDisplayedElems] = createSignal(
-		structuredClone(arr)
+		structuredClone(arr),
 	);
 	const steps = bubbleSort(arr);
-    let ind = 0;
+	let ind = 0;
 	setInterval(() => {
-        setDisplayedElems(steps[ind])
-        ind++;
-    }, 2000);
+		setDisplayedElems(steps[ind]);
+		ind++;
+	}, 2000);
 	return (
 		<>
 			<For each={displayedElems()}>
