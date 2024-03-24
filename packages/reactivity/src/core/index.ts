@@ -47,6 +47,12 @@ export class Computation<T = any> {
 	}
 	removeSources() {
 		// this.sources.forEach((s) => s.observers.delete(this));
+		// Below code works properly but is super slow
+		// this.sources.forEach((s) => {
+		// 	const ind = s.observers.indexOf(this);
+		// 	if (ind < 0) return;
+		// 	s.observers.splice(ind, 1);
+		// });
 		for (let i = 0; i < this.sources.length; i++) {
 			const s = this.sources[i];
 			const ind = this.sourceSlots[i];
@@ -83,7 +89,7 @@ export class Computation<T = any> {
 		this.observers.forEach((o) => o.mark(CHECK));
 	}
 	read = () => {
-		if (OBSERVER !== null) {
+		if (OBSERVER !== null && OBSERVER.sources.indexOf(this) === -1) {
 			this.observerSlots.push(OBSERVER.sources.length);
 			OBSERVER.sources.push(this);
 
