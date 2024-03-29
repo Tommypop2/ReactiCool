@@ -23,4 +23,12 @@ describe("Signals", () => {
 		set(1);
 		expect(updates).toBe(2);
 	});
+	test("Function setters work", () => {
+		const [get, set] = createSignal(0);
+		expect(get()).toBe(0);
+		for (let i = 0; i < 10; i++) {
+			set((v) => v + 1);
+		}
+		expect(get()).toBe(10);
+	});
 });

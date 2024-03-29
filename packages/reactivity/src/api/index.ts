@@ -6,15 +6,15 @@ import {
 	runWithObserver,
 } from "../core";
 export type Getter<T = any> = () => T;
-export type Setter<T = any> = (v: T) => void;
+export type Setter<T = any> = (v: T | ((v: T) => T)) => void;
 export type Signal<T = any> = [Getter<T>, Setter<T>];
 export const createSignal = <T>(val: T, _id?: string): Signal<T> => {
 	const comp = new Computation(val);
-	return [comp.read, comp.write];
+	return [comp.read.bind(comp), comp.write.bind(comp)];
 };
 export const createMemo = <T>(fn: () => T): Getter<T> => {
 	const comp = new Computation(fn);
-	return comp.read;
+	return comp.read.bind(comp);
 };
 export const createEffect = (fn: () => any) => {
 	new Computation(fn, true);
@@ -24,7 +24,7 @@ export const untrack = <T>(fn: () => T) => runWithObserver(null, fn);
 export const on = <T>(
 	deps: Getter | Getter[],
 	fn: () => T,
-	opts: { defer: boolean } = { defer: false }
+	opts: { defer: boolean } = { defer: false },
 ) => {
 	let defer = opts.defer;
 	return () => {

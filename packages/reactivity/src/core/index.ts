@@ -75,21 +75,23 @@ export class Computation<T = any> {
 		// Get child nodes to mark
 		this.observers.forEach((o) => o.mark(CHECK));
 	}
-	read = () => {
+	read() {
 		if (OBSERVER) {
 			OBSERVER.sources.add(this);
 			this.observers.add(OBSERVER);
 		}
 		this.updateIfNecessary();
 		return this.value;
-	};
-	write = (v: T) => {
+	}
+	write(val: T | ((v: T) => T)) {
+		// @ts-ignore
+		const v = typeof val === "function" ? val(this.value) : val;
 		if (v === this.value) return;
 		this.value = v;
 		// Mark child nodes
 		this.observers.forEach((o) => o.mark(DIRTY));
 		if (!BATCHING) stabilize();
-	};
+	}
 }
 export const runWithObserver = <T>(
 	observer: Computation | null,
