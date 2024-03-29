@@ -20,7 +20,7 @@
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
-		"@babel/core": "^7.24.1",
+		"@babel/core": "^7.24.3",
 		"@babel/plugin-transform-typescript": "^7.24.1",
 		"@reacticool/reactivity": "workspace:*",
 		"@solid-cli/reactivity": "^0.0.11",
