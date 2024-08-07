@@ -20,13 +20,13 @@
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
-		"@babel/core": "^7.24.5",
-		"@babel/plugin-transform-typescript": "^7.24.5",
+		"@babel/core": "^7.25.2",
+		"@babel/plugin-transform-typescript": "^7.25.2",
 		"@reacticool/reactivity": "workspace:*",
 		"@solid-cli/reactivity": "^0.0.11",
 		"@types/babel__core": "^7.20.5",
-		"dom-expressions": "^0.37.20",
-		"tsup": "^8.0.2"
+		"dom-expressions": "^0.38.1",
+		"tsup": "^8.2.4"
 	},
 	"peerDependencies": {
 		"@reacticool/reactivity": "workspace:*"
