@@ -22,24 +22,24 @@
 	],
 	"license": "MIT",
 	"devDependencies": {
-		"@biomejs/biome": "^1.8.3",
+		"@biomejs/biome": "^1.9.4",
 		"@reacticool/router": "workspace:*",
 		"@reacticool/web": "workspace:*",
-		"@types/node": "^22.1.0",
-		"@unocss/preset-wind": "^0.61.9",
-		"babel-plugin-jsx-dom-expressions": "^0.38.1",
-		"jiti": "^1.21.6",
-		"solid-js": "^1.8.19",
-		"turbo": "^2.0.12",
-		"typescript": "^5.5.4",
-		"unocss": "^0.61.9",
-		"vite": "^5.4.0",
-		"vite-plugin-babel": "^1.2.0",
-		"vitest": "^2.0.5"
+		"@types/node": "^22.13.4",
+		"@unocss/preset-wind": "^65.5.0",
+		"babel-plugin-jsx-dom-expressions": "^0.39.6",
+		"jiti": "^2.4.2",
+		"solid-js": "^1.9.4",
+		"turbo": "^2.4.2",
+		"typescript": "^5.7.3",
+		"unocss": "^65.5.0",
+		"vite": "^6.1.0",
+		"vite-plugin-babel": "^1.3.0",
+		"vitest": "^3.0.5"
 	},
 	"dependencies": {
-		"dom-expressions": "^0.38.1",
-		"vite-plugin-solid": "^2.10.2"
+		"dom-expressions": "^0.39.6",
+		"vite-plugin-solid": "^2.11.1"
 	},
 	"packageManager": "pnpm@9.6.0"
 }

@@ -14,10 +14,10 @@
 	"devDependencies": {
 		"@reactively/core": "^0.0.8",
 		"@solid-cli/reactivity": "^0.0.11",
-		"@vue/reactivity": "^3.4.36",
-		"jiti": "^1.21.6",
+		"@vue/reactivity": "^3.5.13",
+		"jiti": "^2.4.2",
 		"s-js": "^0.4.9",
-		"solid-js": "^1.8.19",
-		"tsup": "^8.2.4"
+		"solid-js": "^1.9.4",
+		"tsup": "^8.3.6"
 	}
 }
